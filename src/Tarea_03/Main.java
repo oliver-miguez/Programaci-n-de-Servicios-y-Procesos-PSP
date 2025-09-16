@@ -1,3 +1,5 @@
+package Tarea_03;
+
 import java.io.IOException;
 import java.util.Scanner;
 
