@@ -28,7 +28,7 @@ public class Interfaz {
 
             switch (op){
                 case 1:
-                    System.out.println("Introduce una IP o un Host");
+                    System.out.println("Introduce una IP o un Host"); // Puedes utilizar google.com para probarlo
                     String datos = sc.next();
                     Lanzar(datos);
 
