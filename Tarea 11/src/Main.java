@@ -7,7 +7,7 @@
  */
 public class Main {
     public static void main(String[] args) {
-        new Domino(1).start();
-
+        //new Domino(1).start();
+        new Domino2(1,10).start();
     }
 }
