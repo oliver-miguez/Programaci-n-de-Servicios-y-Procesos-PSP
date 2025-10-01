@@ -22,8 +22,13 @@ public class Domino extends Thread {
 
         for(int i = 0 ; i < numero_domino; i++){
             System.out.println("[Hilo - "+ numero +"] Iteración "+ i );
+            int tiempo = numero();
+            try {
+                Thread.sleep(tiempo);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-
 
         try {
             nuevo_hilo.join();
@@ -35,6 +40,16 @@ public class Domino extends Thread {
 
 
 
+    }
+
+    /**
+     * Genera un número del 100 al 600 para el tiempo de espera de cada hilo lanzado
+     * @return el tiempo de espera de cada hilo
+     */
+    public static int numero() {
+        int n = 500;
+        int numero = (int) (Math.random() * n) + 100;
+        return numero;
     }
 
 }
