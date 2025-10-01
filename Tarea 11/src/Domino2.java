@@ -47,8 +47,6 @@ public class Domino2 extends Thread {
 
         System.out.println("Hilo - " + numero + " finalizado");
 
-
-
     }
 
     /**
