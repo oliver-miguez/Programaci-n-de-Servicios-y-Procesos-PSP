@@ -13,11 +13,18 @@ public class Domino2 extends Thread {
     int numero;
     int numMaxHilos;
     Domino2 nuevo_hilo;
+
     public Domino2(int n, int numMaxHilos){
         this.numero = n;
-        this.numMaxHilos = numMaxHilos;
+        setNumMaxHilos(numMaxHilos);
+    }
 
-
+    public void setNumMaxHilos(int numMaxHilos) {
+        if (numMaxHilos > 0) {
+            this.numMaxHilos = numMaxHilos;
+        }else{
+            this.numMaxHilos = 5;
+        }
     }
 
     @Override
