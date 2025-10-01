@@ -22,10 +22,10 @@ public class Domino2 extends Thread {
 
     @Override
     public void run(){
-        nuevo_hilo = new Domino2(numero + 1,numMaxHilos);
-        int numero_domino = numMaxHilos + 1;
+        nuevo_hilo = new Domino2(numero + 1, numMaxHilos);
+        int numero_domino = 6;
 
-        if (numero<5){
+        if (numero< numMaxHilos){
             nuevo_hilo.start();
         }
 
