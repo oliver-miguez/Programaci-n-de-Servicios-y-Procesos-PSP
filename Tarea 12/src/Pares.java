@@ -15,7 +15,7 @@ public class Pares extends Thread{
      */
     public static void sumaPares(){
         int sumaPares = 0;
-        for(int i = 0; i < 1923; i++){
+        for(int i = 0; i < 1924; i++){
             if(i % 2 == 0){
                 sumaPares += i; // Recoge la suma de los pares
             }

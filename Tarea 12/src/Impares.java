@@ -15,7 +15,7 @@ public class Impares extends Thread{
      */
     public static void sumaImpares(){
         int sumaImpares = 0;
-        for(int i = 0; i < 1923; i++){
+        for(int i = 0; i < 1924; i++){
             if(i % 2 != 0){
                 sumaImpares += i; // Recoge la suma de los impares
             }
