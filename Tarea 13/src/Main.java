@@ -12,10 +12,18 @@
  */
 public class Main {
     public static void main(String[] args) {
-        new Hilos("Pepe").start();
-        new Hilos("Carlos").start();
-        new Hilos("Juan").start();
-        new Hilos("Arturo").start();
+        Hilos n1 = new Hilos("Pepe");
+        n1.start();
+        n1.setPriority(Thread.MAX_PRIORITY);
+        Hilos n2 = new Hilos("Juan");
+        n2.start();
+        n2.setPriority(Thread.NORM_PRIORITY);
+        Hilos n3 = new Hilos("Paco");
+        n3.start();
+        n3.setPriority(Thread.NORM_PRIORITY);
+        Hilos n4 = new Hilos("Alberto");
+        n4.start();
+        n4.setPriority(Thread.MIN_PRIORITY);
 
     }
 }
