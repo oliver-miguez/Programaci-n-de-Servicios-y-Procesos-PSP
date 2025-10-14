@@ -34,6 +34,6 @@ public class Main {
         }catch (InterruptedException e){
             System.out.println("Hilo interrumpido");
         }
-        System.out.println(Contador.contador);
+        System.out.println("Total de vocales que tiene la palabra :"+ Contador.contador);
     }
 }
