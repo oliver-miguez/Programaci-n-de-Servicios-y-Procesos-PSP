@@ -1,7 +1,14 @@
+/**
+ * Lo que ejecuta cada hilo
+ */
 public class Hilo extends Thread {
+
+    // Variables
     String textoIntroducido;
     int totalVocales;
     char vocal;
+
+    // Constructor
     public Hilo(String texto,char vocal){
         this.textoIntroducido = texto;
         this.vocal = vocal;
