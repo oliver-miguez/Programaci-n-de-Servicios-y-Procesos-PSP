@@ -47,6 +47,7 @@ public class Main {
                 if(socket.isConnected()){
                     System.out.println("El puerto: "+ puerto+ ", está conectado correctamente");
                 }
+                socket.close();
             } catch (UnknownHostException e) {
                 System.out.println("Host no existente o desconocido: "+e.getMessage());
             } catch (IOException e) {
