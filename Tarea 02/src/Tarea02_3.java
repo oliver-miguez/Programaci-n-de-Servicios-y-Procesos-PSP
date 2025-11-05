@@ -1,5 +1,3 @@
-package Tarea_02;
-
 import java.util.Properties;
 
 /**

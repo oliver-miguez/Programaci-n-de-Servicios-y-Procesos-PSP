@@ -1,5 +1,3 @@
-package Tarea_02;
-
 /**
  * La memoria total, la memoria libre y la memoria en uso expresados en MiB.
  */

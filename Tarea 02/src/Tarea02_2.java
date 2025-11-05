@@ -1,5 +1,3 @@
-package Tarea_02;
-
 /**
  * El número de procesadores disponibles para la JVM.
  */
