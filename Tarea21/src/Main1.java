@@ -2,7 +2,7 @@
  * Clase principal, PARKING Y COCHES ejercicio
  * TAREA 21
  */
-public class Main {
+public class Main1 {
     /**
      * Metodo principal del programa
      * @param args no usamos

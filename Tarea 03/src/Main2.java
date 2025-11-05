@@ -7,7 +7,7 @@ Crea un programa en Java que permita al usuario, desde la línea de comandos, ab
 El usuario deberá introducir por teclado el nombre del archivo o su ruta completa (incluyendo la extensión).
 Si el archivo no existe, el editor deberá permitir su creación.
  */
-public class Main {
+public class Main2 {
     public static void main(String[] args) throws IOException {
         //crea un objeto escáner para preguntar por pantalla
         Scanner sc = new Scanner(System.in);
