@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.net.*;
 import java.sql.Array;
+import java.util.Scanner;
 
 /**
  * Partiendo de los códigos de ejemplo del aula virtual para DatagramSocket y DatagramPacket programa una conversación entre el cliente y el servidor donde cada uno envíe 3 mensajes cada uno. Puedes hacerlo desde código. Por ejemplo:
@@ -15,8 +16,18 @@ import java.sql.Array;
 public class Cliente {
     public static void main(String[] args) {
         try{
-            String[]mensajesEnviar = {"Sin Tv","y sin cerveza","Homer",""};
+            String[]mensajesEnviar = new String[3];
+            Scanner sc = new Scanner(System.in);
+
+            for(int i = 0; i <= 2 ; i++){
+                System.out.println("Introduce un mensaje: ");
+                String mensajeEscrito = sc.next();
+                mensajesEnviar[i] = mensajeEscrito;
+            }
+
             for(String mensaje : mensajesEnviar) {
+
+
 
                     DatagramSocket socket = new DatagramSocket();
                     InetAddress ipDestino = InetAddress.getByName("localhost");
