@@ -36,10 +36,13 @@ public class CalculadoraCliente {
             switch (op){
                 case 1:
                     operador = "+";
+                    break;
                 case 2:
                     operador = "-";
+                    break;
                 case 3:
                     operador = "*";
+                    break;
                 case 4:
                     operador = "/";
             }
