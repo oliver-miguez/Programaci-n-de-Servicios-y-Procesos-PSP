@@ -3,6 +3,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.net.*;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CalculadoraCliente {
@@ -48,14 +49,22 @@ public class CalculadoraCliente {
             }
 
             // Números para realizar las operaciones
-            double num1 = 0;
-            double num2 = 0;
+            double num1 = 0.0;
+            double num2 = 0.0;
 
-            // Números a enviar al servidor
             System.out.println("Introduce el valor del primer número:");
-            num1 = sc.nextInt();
+            while (!sc.hasNextDouble()) { // Evita que el valor introducido sea distinto a un Double
+                System.out.println("Valor no válido. Introduce un número válido:");
+                sc.next(); // limpiar el valor incorrecto
+            }
+            num1 = sc.nextDouble(); // Guarda el valor introducido por consola
+
             System.out.println("Introduce el valor del segundo número:");
-            num2 = sc.nextInt();
+            while (!sc.hasNextDouble()) {
+                System.out.println("Valor no válido. Introduce un número válido:");
+                sc.next();
+            }
+            num2 = sc.nextDouble();
 
             // Array de Strings a enviar
             String[] datosEnviar = new String[3];
