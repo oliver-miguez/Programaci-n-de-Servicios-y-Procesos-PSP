@@ -13,7 +13,7 @@ import java.util.Scanner;
  * El Cliente envía esa línea al Servidor.
  * Si la línea enviada es "adios", el bucle del cliente termina y se cierra la conexión.
  * El Servidor entra en un bucle donde lee la línea del cliente.
- * Si la línea recibida es null o "adios", el bucle del servidor termina.
+ * Si la línea recibida es null o "adios", InetSocketAddress dir = new InetSocketAddress(6666); el bucle del servidor termina.
  * El Servidor envía la misma línea de vuelta al Cliente, prefijada con "ECO:".
  * El Cliente lee la respuesta "ECO:" del servidor y la imprime por pantalla.
  */

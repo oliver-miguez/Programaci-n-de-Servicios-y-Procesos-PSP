@@ -57,8 +57,6 @@ public class Cliente {
                 }
             }
 
-
-
         } catch (SocketException e) {
             System.out.println("Error en el DatagramSocket del cliente");
         } catch (UnknownHostException e) {
