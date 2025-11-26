@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 public class CalculadoraServidor {
     public static void main(String[] args) {
@@ -22,9 +23,27 @@ public class CalculadoraServidor {
 
             // Lee los datos enviados por el cliente
             BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
             datosRecibidos = lector.readLine();
-            System.out.println(datosRecibidos);
+            String ajuste = "";
+
+            // Ajusta elString recibido a un formato específico
+            ajuste = datosRecibidos.replaceAll("]","");
+            ajuste = ajuste.replace("[","");
+            ajuste = ajuste.replaceAll(" ", "");
+            ajuste = ajuste.replaceAll(" ",""); // Evitar posibles errores con el envío de datos
+
+            // Recoge cada valor independiente recibido
+            String[]ajusteSplit = ajuste.split(",");
+
+            String operador = ajusteSplit[0];
+            double num1 = Double.parseDouble(ajusteSplit[1]);
+            double num2 = Double.parseDouble(ajusteSplit[2]);
+
+            // EL ERROR ESTÁ AQUÍ
+            double operacion = Double.parseDouble(num1 + operador + num2);
+            System.out.println(operacion);
+
+
 
             System.out.println("Cerrando Servidor");
 
