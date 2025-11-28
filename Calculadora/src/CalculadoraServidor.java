@@ -35,42 +35,42 @@ public class CalculadoraServidor {
             // Recoge cada valor independiente recibido
             String[]ajusteSplit = ajuste.split(",");
 
+            while(ajusteSplit[0].equals("Salir")) {
+
             // Muestra los valores recibidos ajustados
             for(String ajust: ajusteSplit){
                 System.out.println(ajust);
             }
 
-            double num1 = Double.parseDouble(ajusteSplit[1]);
-            double num2 = Double.parseDouble(ajusteSplit[2]);
+                double num1 = Double.parseDouble(ajusteSplit[1]);
+                double num2 = Double.parseDouble(ajusteSplit[2]);
 
-            System.out.println("Numero 1 recibido: "+num1);
-            System.out.println("Numero 2 recibido:"+num2);
+                System.out.println("Numero 1 recibido: " + num1);
+                System.out.println("Numero 2 recibido:" + num2);
 
-            double resultado = 0;
+                double resultado = 0;
 
-            switch (ajusteSplit[0]){
-                case "+":
-                    resultado = num1 + num2;
-                    break;
-                case "-":
-                    resultado = num1 - num2;
-                    break;
-                case "*":
-                    resultado = num1 * num2;
-                    break;
-                case "/":
-                    resultado = num1 / num2;
+                switch (ajusteSplit[0]) {
+                    case "+":
+                        resultado = num1 + num2;
+                        break;
+                    case "-":
+                        resultado = num1 - num2;
+                        break;
+                    case "*":
+                        resultado = num1 * num2;
+                        break;
+                    case "/":
+                        resultado = num1 / num2;
+                }
+
+                System.out.println("Resultado: " + resultado);
+
+                socket.close();
+                servidor.close();
             }
 
-            System.out.println("Resultado: "+ resultado);
-
-
-
-
             System.out.println("Cerrando Servidor");
-
-            socket.close();
-            servidor.close();
 
         } catch (IOException e) {
             System.out.println("Error con el servidor: "+e.getMessage());
