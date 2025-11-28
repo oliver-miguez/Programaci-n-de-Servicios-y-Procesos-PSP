@@ -26,7 +26,7 @@ public class CalculadoraServidor {
             datosRecibidos = lector.readLine();
             String ajuste = "";
 
-            // Ajusta elString recibido a un formato específico
+            // Ajusta el String recibido a un formato específico
             ajuste = datosRecibidos.replaceAll("]","");
             ajuste = ajuste.replace("[","");
             ajuste = ajuste.replaceAll(" ", "");
@@ -35,13 +35,35 @@ public class CalculadoraServidor {
             // Recoge cada valor independiente recibido
             String[]ajusteSplit = ajuste.split(",");
 
-            String operador = ajusteSplit[0];
+            // Muestra los valores recibidos ajustados
+            for(String ajust: ajusteSplit){
+                System.out.println(ajust);
+            }
+
             double num1 = Double.parseDouble(ajusteSplit[1]);
             double num2 = Double.parseDouble(ajusteSplit[2]);
 
-            // EL ERROR ESTÁ AQUÍ
-            double operacion = Double.parseDouble(num1 + operador + num2);
-            System.out.println(operacion);
+            System.out.println("Numero 1 recibido: "+num1);
+            System.out.println("Numero 2 recibido:"+num2);
+
+            double resultado = 0;
+
+            switch (ajusteSplit[0]){
+                case "+":
+                    resultado = num1 + num2;
+                    break;
+                case "-":
+                    resultado = num1 - num2;
+                    break;
+                case "*":
+                    resultado = num1 * num2;
+                    break;
+                case "/":
+                    resultado = num1 / num2;
+            }
+
+            System.out.println("Resultado: "+ resultado);
+
 
 
 
