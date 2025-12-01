@@ -26,52 +26,81 @@ public class CalculadoraServidor {
             datosRecibidos = lector.readLine();
             String ajuste = "";
 
-            // Ajusta el String recibido a un formato específico
-            ajuste = datosRecibidos.replaceAll("]","");
-            ajuste = ajuste.replace("[","");
-            ajuste = ajuste.replaceAll(" ", "");
-            ajuste = ajuste.replaceAll(" ",""); // Evitar posibles errores con el envío de datos
-
-            // Recoge cada valor independiente recibido
-            String[]ajusteSplit = ajuste.split(",");
-
-            while(ajusteSplit[0].equals("Salir")) {
-
-            // Muestra los valores recibidos ajustados
-            for(String ajust: ajusteSplit){
-                System.out.println(ajust);
-            }
-
-                double num1 = Double.parseDouble(ajusteSplit[1]);
-                double num2 = Double.parseDouble(ajusteSplit[2]);
-
-                System.out.println("Numero 1 recibido: " + num1);
-                System.out.println("Numero 2 recibido:" + num2);
-
-                double resultado = 0;
-
-                switch (ajusteSplit[0]) {
-                    case "+":
-                        resultado = num1 + num2;
-                        break;
-                    case "-":
-                        resultado = num1 - num2;
-                        break;
-                    case "*":
-                        resultado = num1 * num2;
-                        break;
-                    case "/":
-                        resultado = num1 / num2;
-                }
-
-                System.out.println("Resultado: " + resultado);
-
+            // Si el cliente cierra, los datos pueden ser "SALIR" o null
+            if (datosRecibidos == null || datosRecibidos.trim().toUpperCase().equals("SALIR")) {
+                System.out.println("Cliente ha solicitado el cierre.");
                 socket.close();
                 servidor.close();
+                return;
             }
 
-            System.out.println("Cerrando Servidor");
 
+            // El String recibido"
+            // Dividimos por el espacio.
+            String[] partes = datosRecibidos.trim().split("\\s+"); // Limpia espacios extremos y divide la cadena por uno o más espacios en blanco.
+
+            if (partes.length < 3) {
+                // Necesitamos al menos el operador (parte[0]) y dos números (parte[1] y parte[2])
+                System.out.println("Error: Formato de datos incompleto. Se esperaban al menos 3 partes (Operador y 2 números).");
+                socket.close();
+                servidor.close();
+                return;
+            }
+
+            String operador = partes[0];
+            double resultado = 0.0;
+            boolean primerNumero = true;
+
+            // Recorremos las partes restantes (los números)
+            for (int i = 1; i < partes.length; i++) {
+                try {
+                    double numActual = Double.parseDouble(partes[i]);
+
+                    if (primerNumero) {
+                        // El primer número inicia el resultado
+                        resultado = numActual;
+                        primerNumero = false;
+                    } else {
+                        // Aplicamos el operador al resultado y al número actual
+                        switch (operador) {
+                            case "+":
+                                resultado += numActual;
+                                break;
+                            case "-":
+                                resultado -= numActual;
+                                break;
+                            case "*":
+                                resultado *= numActual;
+                                break;
+                            case "/":
+                                if (numActual == 0) {
+                                    System.out.println("Error: División por cero detectada.");
+                                    resultado = Double.NaN; // Not a Number, como no es un número asigna el valor infinito
+                                    i = partes.length; // Salir del bucle
+                                } else {
+                                    resultado /= numActual;
+                                }
+                                break;
+                            default:
+                                System.out.println("Error: Operador no reconocido.");
+                                resultado = Double.NaN;
+                                i = partes.length; // Salir del bucle
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Error: Uno de los valores no es un número válido: " + partes[i]);
+                    resultado = Double.NaN;
+                    break; // Salir del bucle
+                }
+            }
+
+            System.out.println("Operador: " + operador);
+            System.out.println("Números procesados: " + (partes.length - 1));
+            System.out.println("Resultado: " + resultado);
+
+
+            socket.close();
+            servidor.close();
         } catch (IOException e) {
             System.out.println("Error con el servidor: "+e.getMessage());
         }

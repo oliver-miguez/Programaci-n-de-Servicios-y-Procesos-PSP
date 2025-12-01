@@ -29,10 +29,18 @@ public class CalculadoraCliente {
             System.out.println("2.Resta");
             System.out.println("3.Multiplicación");
             System.out.println("4.Division");
-            System.out.println("5.Cerrando");
+            System.out.println("5.SALIR");
 
             System.out.println("Elige el tipo de operación a realizar: ");
+
+            // Manejo de errores para la opción de menú
+            while (!sc.hasNextInt()) {
+                System.out.println("Opción no válida. Introduce un número del 1 al 5:");
+                sc.next();
+            }
             op = sc.nextInt(); // Recoge la opción elegida
+
+            sc.nextLine();
 
             // Actualizar un valor operador, según la opción elegida
             String operador = "";
@@ -50,58 +58,34 @@ public class CalculadoraCliente {
                     operador = "/";
                     break;
                 case 5:
-                    operador = "Salir";
+                    operador = "SALIR";
             }
 
-            // Números para realizar las operaciones
-            double num1 = 0.0;
-            double num2 = 0.0;
-
+            // Acciones que realiza la calculadora
             if(op != 5){
+                String numeroString = "";
+                System.out.println("Introduce los números separados por un espacio, ejemplo(1 23 4 123):");
+                // Lee toda la línea como una sola cadena
+                numeroString = sc.nextLine().trim();
 
-                System.out.println("Introduce el valor del primer número:");
-                while (!sc.hasNextDouble()) { // Evita que el valor introducido sea distinto a un Double
-                    System.out.println("Valor no válido. Introduce un número válido:");
-                    sc.next(); // limpiar el valor incorrecto
-                }
-                num1 = sc.nextDouble(); // Guarda el valor introducido por consola
-
-                System.out.println("Introduce el valor del segundo número:");
-                while (!sc.hasNextDouble()) {
-                    System.out.println("Valor no válido. Introduce un número válido:");
-                    sc.next();
-                }
-                num2 = sc.nextDouble();
-
-                // Array de Strings a enviar
-                String[] datosEnviar = new String[3];
-                datosEnviar[0] = operador;
-                datosEnviar[1] = Double.toString(num1);
-                datosEnviar[2] = Double.toString(num2);
+                String mensajeCompleto = operador + " "+ numeroString;
+                System.out.println("Enviando al servidor: "+mensajeCompleto);
 
                 // Envia un String con todos los datos
                 PrintWriter escritor = new PrintWriter(socket.getOutputStream(), true);
-                escritor.println(Arrays.toString(datosEnviar));
+                escritor.println(mensajeCompleto);
             }else{
-                // Evita error de que no detecta un numero de enviar
-                // Con esto le enviamos unos datos, que no van a ser utilizados, para arreglarlo
-
-                num1 = 0.0;
-                num2 = 0.0;
-
-                // Array de Strings a enviar
-                String[] datosEnviar = new String[3];
-                datosEnviar[0] = ""; // No envia ningun operador
-                datosEnviar[1] = Double.toString(num1);
-                datosEnviar[2] = Double.toString(num2);
+                // Para el caso de la opción "SALIR"
 
                 // Envia un String con todos los datos
                 PrintWriter escritor = new PrintWriter(socket.getOutputStream(), true);
-                escritor.println(Arrays.toString(datosEnviar));
+                escritor.println(operador); // Enviamos SALIR
 
-
-                System.out.println("Cerrando cliente");
             }
+
+
+            socket.close();
+            sc.close();
 
 
         } catch (UnknownHostException e) {
