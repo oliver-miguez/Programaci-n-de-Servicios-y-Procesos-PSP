@@ -24,7 +24,6 @@ public class CalculadoraServidor {
             // Lee los datos enviados por el cliente
             BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             datosRecibidos = lector.readLine();
-            String ajuste = "";
 
             // Si el cliente cierra, los datos pueden ser "SALIR" o null
             if (datosRecibidos == null || datosRecibidos.trim().toUpperCase().equals("SALIR")) {
@@ -93,6 +92,10 @@ public class CalculadoraServidor {
                     break; // Salir del bucle
                 }
             }
+
+            // Envia un String del resultado obtenido al cliente
+            PrintWriter escritor = new PrintWriter(socket.getOutputStream(), true);
+            escritor.println(resultado);
 
             System.out.println("Operador: " + operador);
             System.out.println("Números procesados: " + (partes.length - 1));

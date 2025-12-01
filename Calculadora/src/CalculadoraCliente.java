@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.net.*;
@@ -83,10 +85,13 @@ public class CalculadoraCliente {
 
             }
 
+            // Lee los datos enviados por el cliente
+            BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String datosRecibidosServidor = lector.readLine();
+            System.out.println(datosRecibidosServidor);
 
             socket.close();
             sc.close();
-
 
         } catch (UnknownHostException e) {
             System.out.println("Error, Host no válido o erróneo: "+e.getMessage());
