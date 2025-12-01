@@ -5,107 +5,122 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 
 public class CalculadoraServidor {
+
     public static void main(String[] args) {
-        String datosRecibidos = "";
-        try {
-            // Socket
+
+        try (ServerSocket servidor = new ServerSocket()) {
+            // socket
             InetSocketAddress dir = new InetSocketAddress(6666);
-            ServerSocket servidor = new ServerSocket();
             servidor.bind(dir);
+            System.out.println("Servidor iniciado. Esperando conexiones");
 
-            // Conexión con el cliente
-            System.out.println("Esperando a conectarse...");
-            Socket socket = servidor.accept();
-            System.out.println("Cliente Conectado");
+            // Bucle principal para mantener el servidor escuchando indefinidamente hasta que se cierre
+            while (true) {
+                // Bloquea y espera la conexión de un cliente
+                Socket socketCliente = servidor.accept();
+                System.out.println("\nCliente conectado desde: " + socketCliente.getInetAddress().getHostName());
 
-            // Lee los datos enviados por el cliente
-            BufferedReader lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                // Llama al metodo que gestiona la solicitud del cliente
+                boolean debeCerrar = manejarCliente(socketCliente);
+
+                // Si el metodo devuelve true (porque recibió "SALIR"), salimos del bucle principal
+                if (debeCerrar) {
+                    System.out.println("Comando 'SALIR' recibido. Cerrando el servidor.");
+                    break;
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error con el servidor principal: " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Gestiona la comunicación y el cálculo para un cliente.
+     * @param socket El socket del cliente .
+     * @return true si se recibió el comando "SALIR", false en caso contrario.
+     */
+    private static boolean manejarCliente(Socket socket) {
+        String datosRecibidos = "";
+        boolean cerrarServidor = false;
+
+        // Utilizamos try-with-resources para asegurar que el socket y streams se cierren después de la comunicación
+        try (
+                Socket cliente = socket;
+                BufferedReader lector = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
+                PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
+        ) {
+
             datosRecibidos = lector.readLine();
 
-            // Si el cliente cierra, los datos pueden ser "SALIR" o null
+            // Administra el programa para que se cierre
             if (datosRecibidos == null || datosRecibidos.trim().toUpperCase().equals("SALIR")) {
-                System.out.println("Cliente ha solicitado el cierre.");
-                socket.close();
-                servidor.close();
-                return;
+                System.out.println("Conexión finalizada");
+                if (datosRecibidos != null && datosRecibidos.trim().toUpperCase().equals("SALIR")) {
+                    escritor.println("Servidor cerrando...");
+                    cerrarServidor = true; // Verificar que el servidor se cierra
+                }
+                return cerrarServidor;
             }
 
+            String[] partes = datosRecibidos.trim().split("\\s+"); // Administra el mensaje enviado, dividiendo cada numero
 
-            // El String recibido"
-            // Dividimos por el espacio.
-            String[] partes = datosRecibidos.trim().split("\\s+"); // Limpia espacios extremos y divide la cadena por uno o más espacios en blanco.
-
+            // Para poder recibir dos números como mínimo para realizar una operación
             if (partes.length < 3) {
-                // Necesitamos al menos el operador (parte[0]) y dos números (parte[1] y parte[2])
-                System.out.println("Error: Formato de datos incompleto. Se esperaban al menos 3 partes (Operador y 2 números).");
-                socket.close();
-                servidor.close();
-                return;
+                String errorMsg = "Error: Formato incompleto. Se esperaban al menos Operador y 2 números.";
+                escritor.println(errorMsg);
+                System.out.println(errorMsg);
+                return false;
             }
 
+            // Variables importantes
             String operador = partes[0];
             double resultado = 0.0;
             boolean primerNumero = true;
 
-            // Recorremos las partes restantes (los números)
             for (int i = 1; i < partes.length; i++) {
                 try {
-                    double numActual = Double.parseDouble(partes[i]);
+                    double numActual = Double.parseDouble(partes[i]); // Recoge cada valor separado del string de datos recibido
 
                     if (primerNumero) {
-                        // El primer número inicia el resultado
                         resultado = numActual;
                         primerNumero = false;
                     } else {
-                        // Aplicamos el operador al resultado y al número actual
                         switch (operador) {
-                            case "+":
-                                resultado += numActual;
-                                break;
-                            case "-":
-                                resultado -= numActual;
-                                break;
-                            case "*":
-                                resultado *= numActual;
-                                break;
+                            case "+": resultado += numActual; break;
+                            case "-": resultado -= numActual; break;
+                            case "*": resultado *= numActual; break;
                             case "/":
                                 if (numActual == 0) {
-                                    System.out.println("Error: División por cero detectada.");
-                                    resultado = Double.NaN; // Not a Number, como no es un número asigna el valor infinito
-                                    i = partes.length; // Salir del bucle
+                                    resultado = Double.NaN; //  Not a Number, para evitar errores de división por 0 o cualquier otra cosa
+                                    i = partes.length;
                                 } else {
                                     resultado /= numActual;
                                 }
                                 break;
                             default:
-                                System.out.println("Error: Operador no reconocido.");
-                                resultado = Double.NaN;
-                                i = partes.length; // Salir del bucle
+                                resultado = Double.NaN; // En caso de no elegir una opción introducida en el menu de opciones
+                                i = partes.length;
                         }
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Error: Uno de los valores no es un número válido: " + partes[i]);
-                    resultado = Double.NaN;
-                    break; // Salir del bucle
+                    resultado = Double.NaN; // Not a Number, evitar errores con el formato
+                    break;
                 }
             }
 
-            // Envia un String del resultado obtenido al cliente
-            PrintWriter escritor = new PrintWriter(socket.getOutputStream(), true);
+            // Envia el resultado obtenido al cliente
             escritor.println(resultado);
+            System.out.println("Operador: " + operador + ", Resultado enviado: " + resultado);
 
-            System.out.println("Operador: " + operador);
-            System.out.println("Números procesados: " + (partes.length - 1));
-            System.out.println("Resultado: " + resultado);
+            return false; // No cerrar el servidor, seguir escuchando
 
-
-            socket.close();
-            servidor.close();
         } catch (IOException e) {
-            System.out.println("Error con el servidor: "+e.getMessage());
+            System.err.println("Error de I/O en la comunicación con el cliente: " + e.getMessage());
+            return false; // Error, pero el servidor principal sigue vivo
         }
     }
 }
