@@ -3,7 +3,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-
 /**
  * Crea un programa que pida dos URLs distintas al usuario (por ejemplo, https://www.google.com y https://www.bing.com) y las compare.
  * Requisitos:
@@ -17,9 +16,11 @@ import java.net.http.HttpResponse;
 public class Main {
     public static void main(String[] args) {
 
+        // Clientes
         HttpClient cliente = HttpClient.newHttpClient();
         HttpClient cliente2 = HttpClient.newHttpClient();
 
+        // Peticiones
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://www.google.com"))
                 .GET()
@@ -30,8 +31,8 @@ public class Main {
                 .GET()
                 .build();
 
-
         try{
+            // Recoger el tiempo en milisegundos
             long inicio1 = System.currentTimeMillis();
             HttpResponse<String> response = cliente.send(request,HttpResponse.BodyHandlers.ofString());
             long fin1 = System.currentTimeMillis();
@@ -40,7 +41,7 @@ public class Main {
             HttpResponse<String> response2 = cliente2.send(request2,HttpResponse.BodyHandlers.ofString());
             long fin2 = System.currentTimeMillis();
 
-            // Tiempo
+            // Calculo de milisegundos totales
             long tiempoMs1 = fin1 - inicio1;
             long tiempoMs2 = fin2 - inicio2;
 
@@ -65,10 +66,8 @@ public class Main {
                 System.out.println("La web más rápida a sido: "+ response2+ " con: " + tiempoMs2 + " milisegundos");
             }
 
-
         }catch(Exception e){
             System.out.println("Error con el envío o al recibir:"+ e.getMessage());
         }
-
     }
 }
