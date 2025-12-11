@@ -11,7 +11,7 @@ public class Monedas {
 
         try {
             // Ejemplo: moneda introducida por el usuario.
-            String userInput = "Bitcoin";
+            String userInput = "Ethereum";
 
             // Buscamos el ID de esa moneda
             String coinId = getCoinId(userInput);
