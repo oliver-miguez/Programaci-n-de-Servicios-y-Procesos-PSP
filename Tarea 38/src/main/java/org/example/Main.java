@@ -16,8 +16,6 @@ public class Main {
         String contrasena_inicio_sesion = sc.next();
         String contrasena_inicio_hash = calculo_hax_inicio_sesion(contrasena_inicio_sesion);
 
-
-
         comparacionHash(contrasena_registro,contrasena_inicio_hash);
 
 
